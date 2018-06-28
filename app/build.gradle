@@ -20,6 +20,12 @@ android {
     }
 }
 
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -29,6 +35,8 @@ dependencies {
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
+
+    implementation"org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
 
     //Zxing dependencies
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'

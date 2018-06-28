@@ -5,9 +5,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.graphics.Rect
-import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
@@ -15,9 +17,12 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.zxing.client.android.Intents
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -39,12 +44,20 @@ class MainActivity : AppCompatActivity() {
             setBarcodeImageEnabled(true)
             setOrientationLocked(true)
         }
+
         btn_for_scan_with_zxing.setOnClickListener {
             qrScan.initiateScan()
         }
 
         btn_for_scan_with_vision.setOnClickListener {
-
+            if(et_qrcode_text.editableText.toString().isNotBlank()){
+                Handler().post{
+                    img_generated_qr.setImageBitmap(generateQRCode(et_qrcode_text.editableText.toString()))
+                }
+            }
+            else{
+                Toast.makeText(this@MainActivity, "No Text!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btn_for_scan.setOnClickListener {
@@ -68,6 +81,28 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    private fun generateQRCode(str:String):Bitmap{
+        val result = MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, 200,200, null)
+        val width = result.width
+        val height = result.height
+        val pixels = IntArray(width * height)
+        for (y in 0 until height){
+            val offset = y * width
+            for(x in 0 until width){
+                pixels[offset + x] = if(result.get(x,y)){
+                    ContextCompat.getColor(this@MainActivity, android.R.color.black)
+                }
+                else{
+                    ContextCompat.getColor(this@MainActivity, android.R.color.white)
+                }
+            }
+        }
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444)
+        bitmap.setPixels(pixels, 0,200, 0,0, width, height)
+        return bitmap
     }
 
     private fun barcodeRecognition(bitmap:Bitmap){
@@ -94,17 +129,10 @@ class MainActivity : AppCompatActivity() {
                         val title = barcode.url?.title
                         val url = barcode.url?.url
                         val stringBuilder = StringBuilder()
-                        result_text_for_qr.text = stringBuilder.append("msg::").append(barcode.rawValue).toString()
                         Log.w("MainActivity", "title:: $title, url: $url")
-                        val intent = Intent(MainActivity@this, WebActivity::class.java)
-                                    .putExtra("url", barcode.rawValue)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = Uri.parse(barcode.rawValue)
                         startActivity(intent)
-
-//                        val intent = Intent(Intent.ACTION_VIEW)
-//                        intent.data = Uri.parse(barcode.rawValue)
-//                        startActivity(intent)
                     }
                     FirebaseVisionBarcode.TYPE_TEXT->{
                         val stringBuilder = StringBuilder()
@@ -117,11 +145,8 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(MainActivity@this, stringBuilder.append("telephone::").append(barcode.phone?.number).toString(), Toast.LENGTH_SHORT)
                                 .show()
                     }
-
                     else-> Log.w("MainActivity", "WTF? ${barcode.valueType}")
-
                 }
-
             }
         }
         .addOnFailureListener {
