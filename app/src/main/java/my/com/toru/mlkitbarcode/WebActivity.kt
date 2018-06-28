@@ -10,8 +10,6 @@ import kotlinx.android.synthetic.main.activity_web.*
 import android.webkit.WebSettings
 import android.os.Build
 
-
-
 class WebActivity : AppCompatActivity() {
 
     companion object {
