@@ -21,8 +21,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
 
 class MainActivity : AppCompatActivity() {
     companion object {
