@@ -2,31 +2,21 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#BF000000">
-
-    <android.support.constraint.Guideline
-        android:id="@+id/horizontal_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8"/>
-
+    android:layout_height="match_parent">
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/zxing_barcode_scanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:zxing_scanner_layout="@layout/custom_qr_scanner"
-        app:layout_constraintBottom_toBottomOf="@id/horizontal_guide">
+        app:zxing_scanner_layout="@layout/custom_qr_scanner">
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
-    <TextView
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/torch"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"
-        android:text="Please scan the QR code to redeem \nyour e-voucher"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        android:src="@drawable/btn_flash_light_off"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </android.support.constraint.ConstraintLayout>
