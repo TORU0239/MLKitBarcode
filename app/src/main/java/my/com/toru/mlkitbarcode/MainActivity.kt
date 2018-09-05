@@ -44,7 +44,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_for_scan_with_zxing.setOnClickListener {
-            qrScan.initiateScan()
+            val integrator = IntentIntegrator(this)
+            integrator.captureActivity = CustomScannerActivity::class.java
+            integrator.initiateScan()
         }
 
         btn_for_scan_with_vision.setOnClickListener {
