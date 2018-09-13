@@ -35,7 +35,10 @@
         android:id="@+id/mapper_scanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/txt"/>
+        android:layout_above="@id/txt"
+        app:squaredFinder="true"
+        app:borderColor="@color/colorAccent"
+        app:maskColor="#30000000"/>
 
     <ImageView
         android:id="@+id/torch"

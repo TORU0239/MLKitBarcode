@@ -18,6 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '27.0.3'
 }
 
 kotlin {
@@ -27,22 +28,17 @@ kotlin {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
-
-    implementation"org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21"
-
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21'
     //Zxing dependencies
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
-
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
