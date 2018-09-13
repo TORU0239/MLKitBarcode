@@ -24,6 +24,12 @@
             android:text="Scan QR Code with ZXING"/>
 
         <Button
+            android:id="@+id/btn_for_scan_mapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan QR Code with ZXing Mapper"/>
+
+        <Button
             android:id="@+id/btn_for_scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -21,6 +21,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_main.*
+import my.com.toru.mlkitbarcode.mapperui.MapperZxingActivity
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -47,6 +48,10 @@ class MainActivity : AppCompatActivity() {
             val integrator = IntentIntegrator(this)
             integrator.captureActivity = CustomScannerActivity::class.java
             integrator.initiateScan()
+        }
+
+        btn_for_scan_mapper.setOnClickListener {
+            startActivity(Intent(this@MainActivity, MapperZxingActivity::class.java))
         }
 
         btn_for_scan_with_vision.setOnClickListener {
