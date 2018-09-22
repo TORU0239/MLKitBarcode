@@ -35,6 +35,12 @@
             android:layout_height="wrap_content"
             android:text="Scan QR Code with ML Kit!!!"/>
 
+        <Button
+            android:id="@+id/btn_for_cam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Opening Intent Camera"/>
+
         <EditText
             android:id="@+id/et_qrcode_text"
             android:layout_width="match_parent"

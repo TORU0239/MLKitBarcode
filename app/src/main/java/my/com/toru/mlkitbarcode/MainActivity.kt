@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         @JvmStatic
         private val REQUESTCODE_BARCODE = 1001
+        private val REQUESTCODE_NORMAL_CAMERA = 1002
     }
 
     private lateinit var qrScan:IntentIntegrator
@@ -34,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Log.w("MainActivity", "onCreate")
 
         qrScan = IntentIntegrator(this@MainActivity)
         with(qrScan){
@@ -68,9 +71,16 @@ class MainActivity : AppCompatActivity() {
         btn_for_scan.setOnClickListener {
             startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUESTCODE_BARCODE)
         }
+
+
+        btn_for_cam.setOnClickListener {
+            startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), REQUESTCODE_NORMAL_CAMERA)
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.w("MainActivity", "onActivityResult")
         when(requestCode){
             REQUESTCODE_BARCODE->{
                 if(resultCode == Activity.RESULT_OK){
@@ -83,6 +93,25 @@ class MainActivity : AppCompatActivity() {
                 result.contents?.let {
                     Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
                 }
+            }
+            REQUESTCODE_NORMAL_CAMERA ->{
+                if(resultCode == Activity.RESULT_OK){
+                    if(data == null) {
+                        Log.w("MainActivity", "data null!!")
+                    }
+                    else{
+                        if(data.extras == null){
+                            Log.w("MainActivity", "extras null!!")
+                        }
+                    }
+
+                    val imageBitMap = data?.extras?.get("data") as Bitmap
+                    img_generated_qr.setImageBitmap(imageBitMap)
+                }
+                else{
+                    Log.w("MainActivity", "result code:: $resultCode")
+                }
+
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
@@ -157,5 +186,10 @@ class MainActivity : AppCompatActivity() {
         .addOnFailureListener {
             it.printStackTrace()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.w("MainActivity", "onResume")
     }
 }
